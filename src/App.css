@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+footer {
+  margin-top: auto;
+}
+
+@media (max-height: 784px) and (min-height: 700px) {
+  footer {
+    position: sticky;
+    bottom: 0;
+  }
+}
