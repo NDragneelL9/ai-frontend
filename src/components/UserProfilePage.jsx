@@ -1,127 +1,81 @@
 import React, { useState } from 'react';
 
-const UserProfilePage = () => {
-  // Sample user data (replace with actual user data)
-  const [user, setUser] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    address: {
-      country: 'Country',
-      city: 'City',
-      street: '123 Main St',
-    },
-    creditCardInfo: '**** **** **** 1234',
-  });
+const user = {
+  firstName: 'John',
+  lastName: 'Doe',
+  address: '123 Main St, City, Country',
+  creditCardInfo: '**** **** **** 1234',
+};
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name.includes('address')) {
-      const addressField = name.split('.')[1]; // Extract field name from nested address object
-      setUser(prevUser => ({
-        ...prevUser,
-        address: {
-          ...prevUser.address,
-          [addressField]: value
-        }
-      }));
-    } else {
-      setUser(prevUser => ({
-        ...prevUser,
-        [name]: value
-      }));
-    }
-  };
+function UserProfile() {
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [address, setAddress] = useState(user.address);
+  const [creditCard, setCreditCard] = useState(user.creditCardInfo);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add code to handle form submission (e.g., update user profile)
-    console.log('Form submitted:', user);
-  };
+  // This is just a utility function to censor the credit card number.
+  const censorCard = (cardNumber) => {
+    return cardNumber.replace(/\\d(?=\\d{4})/g, "*");
+  }
 
   return (
-    <div className="container mx-auto mt-8 min-h-[75vh]">
-      <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex flex-wrap mb-4">
-            <div className="w-full md:w-1/2 pr-4">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">First Name:</h3>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={user.firstName}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
-                />
-              </div>
-            </div>
-            <div className="w-full md:w-1/2">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Last Name:</h3>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={user.lastName}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-wrap mb-4">
-            <div className="w-full md:w-1/3 pr-4">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Country:</h3>
-                <input
-                  type="text"
-                  name="address.country"
-                  value={user.address.country}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
-                />
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 pr-4">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">City:</h3>
-                <input
-                  type="text"
-                  name="address.city"
-                  value={user.address.city}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
-                />
-              </div>
-            </div>
-            <div className="w-full md:w-1/3">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Street:</h3>
-                <input
-                  type="text"
-                  name="address.street"
-                  value={user.address.street}
-                  onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold mb-2">Credit Card:</h3>
-            <input
-              type="text"
-              name="creditCardInfo"
-              value={user.creditCardInfo}
-              onChange={handleChange}
-              className="border border-gray-300 px-3 py-2 rounded-md w-full"
-            />
-          </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Save Changes</button>
+    <div className="max-w-4xl mx-auto p-5">
+      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="mb-6">
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
         </div>
-      </form>
+        <div className="mb-6">
+          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+      </div>
+      <div className="mb-6">
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="creditCard" className="block text-sm font-medium text-gray-700">Credit Card</label>
+        <input
+          type="text"
+          id="creditCard"
+          name="creditCard"
+          value={censorCard(creditCard)}
+          onChange={(e) => setCreditCard(e.target.value)}
+          className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          maxLength="16"
+          placeholder="****-****-****-####"
+        />
+      </div>
+      <div className="mb-6">
+        <button className="mt-1 p-2 block w-full bg-blue-500 text-white font-bold border border-gray-300 rounded-md shadow-sm hover:border-indigo-800 sm:text-sm">
+          Save changes
+        </button>
+      </div>
     </div>
   );
-}
+};
 
-export default UserProfilePage;
+export default UserProfile;

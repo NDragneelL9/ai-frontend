@@ -6,11 +6,8 @@ body {
 
 footer {
   margin-top: auto;
-}
-
-@media (max-height: 784px) and (min-height: 700px) {
-  footer {
-    position: sticky;
-    bottom: 0;
-  }
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
