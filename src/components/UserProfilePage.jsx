@@ -13,6 +13,26 @@ const UserProfilePage = () => {
     creditCardInfo: '**** **** **** 1234',
   });
 
+  // Samples user payments data
+  const payments = [
+    {
+      id: 1,
+      orderId: 1,
+      paymentNumber: 1,
+      amount: 19.99,
+      paymentDate: new Date().toISOString(),
+      status: "pending"
+    },
+    {
+      id: 2,
+      orderId: 2,
+      paymentNumber: 2,
+      amount: 39.99,
+      paymentDate: new Date().toISOString(),
+      status: "success"
+    },
+  ]
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.includes('address')) {
@@ -29,6 +49,32 @@ const UserProfilePage = () => {
         ...prevUser,
         [name]: value
       }));
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'success':
+        return 'bg-green-500';
+      case 'pending':
+        return 'bg-yellow-500';
+      case 'failed':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'success':
+        return 'Payment Successful';
+      case 'pending':
+        return 'Payment Pending';
+      case 'failed':
+        return 'Payment Failed';
+      default:
+        return 'Unknown Status';
     }
   };
 
@@ -120,6 +166,31 @@ const UserProfilePage = () => {
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Save Changes</button>
         </div>
       </form>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="flex flex-wrap mb-4">
+          <div className="w-full md:w-1/2 pr-4">
+            <h2 className="text-2xl font-semibold mb-4">User payments</h2>
+            <div className="flex">
+              {payments.length > 0 && (
+                payments.map(payment => {
+                  return (
+                    <div key={payment.id} className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2">
+                      <div className={`px-4 py-2 ${getStatusColor(payment.status)} text-white text-center`}>
+                        <h3 className="text-lg font-semibold">{getStatusText(payment.status)}</h3>
+                      </div>
+                      <div className="p-4">
+                        <p className="text-sm">Payment number: {payment.paymentNumber}</p>
+                        <p className="text-sm">Payment amount: {payment.amount}</p>
+                        <p className="text-sm">Payment date: {payment.paymentDate}</p>
+                      </div>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
