@@ -322,7 +322,91 @@ Prompt 7. As senior developer create react component that shows payment page for
 
 Answer 7:
 
+```
+import React, { useState } from 'react';
 
+const PaymentPage = () => {
+  const [paymentInfo, setPaymentInfo] = useState({
+    cardNumber: '',
+    cardholderName: '',
+    expirationDate: '',
+    cvv: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentInfo(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add code to handle payment submission
+    console.log('Payment submitted:', paymentInfo);
+  };
+
+  return (
+    <div className="container mx-auto mt-8">
+      <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="mb-4">
+            <label htmlFor="cardNumber" className="text-lg font-semibold mb-2 block">Card Number:</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              value={paymentInfo.cardNumber}
+              onChange={handleChange}
+              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="cardholderName" className="text-lg font-semibold mb-2 block">Cardholder Name:</label>
+            <input
+              type="text"
+              id="cardholderName"
+              name="cardholderName"
+              value={paymentInfo.cardholderName}
+              onChange={handleChange}
+              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+            />
+          </div>
+          <div className="flex flex-wrap -mx-2 mb-4">
+            <div className="w-full md:w-1/2 px-2">
+              <label htmlFor="expirationDate" className="text-lg font-semibold mb-2 block">Expiration Date:</label>
+              <input
+                type="text"
+                id="expirationDate"
+                name="expirationDate"
+                value={paymentInfo.expirationDate}
+                onChange={handleChange}
+                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+              />
+            </div>
+            <div className="w-full md:w-1/2 px-2">
+              <label htmlFor="cvv" className="text-lg font-semibold mb-2 block">CVV:</label>
+              <input
+                type="text"
+                id="cvv"
+                name="cvv"
+                value={paymentInfo.cvv}
+                onChange={handleChange}
+                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+              />
+            </div>
+          </div>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Submit Payment</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default PaymentPage;
+```
 
 # Conclusion
 In general gpt-3.5 helps with generating basic layout  for desired domain. Also AI is capable of working with front-end logic generation (in our example working with shopping cart and creating routing between pages). At the end AI is worth using for scaffolding a brand new project (creating MVP's or prototypes). But still should be used with care, since some work is easier to do manually rather than spending time for "good" prompt to generate something.
