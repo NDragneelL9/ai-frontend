@@ -318,6 +318,12 @@ export default UserProfilePage;
 
 *all fields were plain text, so also asked to convert them into input fields*
 
+Prompt 7. As senior developer create react component that shows payment page for online shop order using tailwind css styles as before.
+
+Answer 7:
+
+
+
 # Conclusion
 In general gpt-3.5 helps with generating basic layout  for desired domain. Also AI is capable of working with front-end logic generation (in our example working with shopping cart and creating routing between pages). At the end AI is worth using for scaffolding a brand new project (creating MVP's or prototypes). But still should be used with care, since some work is easier to do manually rather than spending time for "good" prompt to generate something.
 
