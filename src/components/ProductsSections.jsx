@@ -1,5 +1,6 @@
 import { useSignal, useSignalEffect } from '@preact/signals-react';
 import React from 'react';
+import { PRODUCTS_GET_URL } from '../helpers/constants';
 
 // Sample product data
 const fkProducts = [
@@ -29,7 +30,7 @@ const ProductsSection = ({cartItems}) => {
   const loadProducts = async () => {
     try {
       console.info("try")
-      const response = await fetch("https://particash.api/products"); // Replace with your API endpoint
+      const response = await fetch(PRODUCTS_GET_URL); // Replace with your API endpoint
       if (response) {
         products.value = await response.json();
       }
