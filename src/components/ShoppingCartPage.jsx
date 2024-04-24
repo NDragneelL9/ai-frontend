@@ -1,6 +1,7 @@
 import React from 'react';
 import { totalPrice, LOCAL_STORAGE_KEY } from '../signals/signals';
 import { useNavigate } from "react-router-dom";
+import { ORDERS_CREATE_URL } from '../helpers/constants';
 
 const ShoppingCartPage = ({ cartItems }) => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const ShoppingCartPage = ({ cartItems }) => {
 
   const startPayment = async () => {
     try {
-      const response = await fetch("https://particash.api/order/create", {
+      const response = await fetch(ORDERS_CREATE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { totalPrice, order, payments } from '../signals/signals';
+import { PAYMENTS_CREATE_URL } from '../helpers/constants';
 
 const PaymentPage = () => {
     // For demo purposes
@@ -23,7 +24,7 @@ const PaymentPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://particash.api/payments/create", {
+            const response = await fetch(PAYMENTS_CREATE_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
