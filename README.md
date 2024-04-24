@@ -589,12 +589,13 @@ Gpt-4-turbo version suggests much more detailed information (including setups an
 - Helps with basic functionality creation.
 - Price depends on usage.
 - Has more attention to details (compare to 3.5 version)
+- Bigger prompts also gives general architectural suggestions, but at least gives templates to start with.
 
 ## Cons
 - API version is only good to 1 prompt tasks (since context is usually lost between requests).
 - Not free of charge.
-- Bigger prompts (even detailed ones) most of the time lead to just architectural answers (general overview).
+- Not a silver bullet (still requires users validation most of the time).
 
 
 # P.S.
-Final version is based on chatgpt-3.5 answers with small modifications (shopping cart functionality with signals and minor fixes to ai generated code). So code base is a little bit different from ai generated code samples.
+Final version is based mostly on answers from chat gpt-4-turbo with small modifications (minor fixes to ai generated code).
