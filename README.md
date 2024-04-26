@@ -408,6 +408,98 @@ const PaymentPage = () => {
 export default PaymentPage;
 ```
 
+Prompt 8. Help me with integration google Oauth to my react components.
+
+Answer 8:
+
+Integrating Google OAuth into a React application involves several steps:
+
+1. Set up a project in the Google Cloud Console.
+2. Install and configure the Google Sign-In library in your React application.
+3. Implement sign-in functionality in your components.
+4. Handle user authentication and obtain user information.
+
+Here's a step-by-step guide to help you integrate Google OAuth into your React components:
+
+### 1. Set up a project in the Google Cloud Console:
+
+- Go to the [Google Cloud Console](https://console.cloud.google.com/).
+- Create a new project or select an existing project.
+- Enable the Google Identity service (OAuth 2.0) for your project.
+- Obtain your Client ID and Client Secret, which you'll need to configure the Google Sign-In library.
+
+### 2. Install and configure the Google Sign-In library:
+
+- In your React project directory, install the Google Sign-In library:
+  ```
+  npm install react-google-login
+  ```
+
+- In your React component file, import the `GoogleLogin` component from the `react-google-login` package:
+
+  ```jsx
+  import { GoogleLogin } from 'react-google-login';
+  ```
+
+- Set up the `GoogleLogin` component with your Client ID obtained from the Google Cloud Console:
+
+  ```jsx
+  <GoogleLogin
+    clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
+    onSuccess={handleGoogleLoginSuccess}
+    onFailure={handleGoogleLoginFailure}
+    cookiePolicy={'single_host_origin'}
+    buttonText="Login with Google"
+  />
+  ```
+
+### 3. Implement sign-in functionality in your components:
+
+- Define `handleGoogleLoginSuccess` and `handleGoogleLoginFailure` functions to handle the success and failure responses from Google OAuth.
+
+### 4. Handle user authentication and obtain user information:
+
+- In the `handleGoogleLoginSuccess` function, you can obtain user information from the `response` object, such as email, name, profile picture, etc. and use it to authenticate the user within your application.
+
+Here's a basic example of how you can implement these steps in your React components:
+
+```jsx
+import React from 'react';
+import { GoogleLogin } from 'react-google-login';
+
+const UserAuthPage = () => {
+  const handleGoogleLoginSuccess = (response) => {
+    // Handle successful login, e.g., authenticate user or redirect to home page
+    console.log('Google login successful:', response.profileObj);
+  };
+
+  const handleGoogleLoginFailure = (error) => {
+    // Handle login failure
+    console.error('Google login failed:', error);
+  };
+
+  return (
+    <div>
+      <h2>Sign in with Google</h2>
+      <GoogleLogin
+        clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
+        onSuccess={handleGoogleLoginSuccess}
+        onFailure={handleGoogleLoginFailure}
+        cookiePolicy={'single_host_origin'}
+        buttonText="Login with Google"
+      />
+    </div>
+  );
+}
+
+export default UserAuthPage;
+```
+*suggested outdated npm package, but overall idea is correct*
+
+Remember to replace `'YOUR_CLIENT_ID.apps.googleusercontent.com'` with your actual Client ID obtained from the Google Cloud Console.
+
+This is a basic implementation. Depending on your requirements, you may need to handle additional scenarios such as session management, user registration, and error handling.
+
 # Conclusion
 In general gpt-3.5 helps with generating basic layout  for desired domain. Also AI is capable of working with front-end logic generation (in our example working with shopping cart and creating routing between pages). At the end AI is worth using for scaffolding a brand new project (creating MVP's or prototypes). But still should be used with care, since some work is easier to do manually rather than spending time for "good" prompt to generate something.
 
@@ -417,7 +509,7 @@ In general gpt-3.5 helps with generating basic layout  for desired domain. Also 
 - Works fine with context for adjustments (e.x: converting user's profile page information from plain texts to input fields and adjusting grid)
 
 ## Cons
-- Limited to 2021 year information.
+- Limited to 2021 year information. (e.x. suggested usage of signals and google oauth is outdated)
 - Smaller details might be completely ignored.
 - Bigger prompts (even detailed ones) most of the time lead to just architectural answers (general overview).
 
