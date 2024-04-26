@@ -1,7 +1,26 @@
-import { effect, signal } from '@preact/signals-react';
-export const LOCAL_STORAGE_KEY = 'cartItems'
-export const PAYMENT_LOCAL_STORAGE_KEY = 'payments'
+import { effect, signal, computed } from "@preact/signals-react";
+export const LOCAL_STORAGE_KEY = "cartItems"
+export const PAYMENT_LOCAL_STORAGE_KEY = "payments"
+export const USER_LOCAL_STORAGE_KEY = "currentUser"
 
+// Auth signals
+
+export const currentUser = signal(getUserFromStorage());
+function getUserFromStorage() {
+  const currentUser = localStorage.getItem(USER_LOCAL_STORAGE_KEY);
+  return currentUser ? JSON.parse(currentUser) : null;
+};
+
+effect(() => {
+  localStorage.setItem(USER_LOCAL_STORAGE_KEY, JSON.stringify(currentUser.value));
+})
+
+//derived state based on whether a user exists
+export const isLoggedIn = computed(() => {
+  return !!currentUser.value;
+});
+
+// CART signals
 export const cartItems = signal(getCartFromStorage());
 function getCartFromStorage() {
   const cartItems = localStorage.getItem(LOCAL_STORAGE_KEY);

@@ -8,9 +8,15 @@ footer {
   margin-top: auto;
 }
 
-@media (max-height: 784px) and (min-height: 700px) {
+@media screen and (min-height: 1000px) {
+  body {
+    display: block;
+  }
+
   footer {
-    position: sticky;
+    position: fixed;
+    left: 0;
     bottom: 0;
+    width: 100%;
   }
 }

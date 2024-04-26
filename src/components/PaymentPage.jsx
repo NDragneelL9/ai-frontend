@@ -46,7 +46,7 @@ const PaymentPage = () => {
     };
 
     return (
-        <div className="container mx-auto mt-8 min-h-[75vh]">
+        <div className="container mx-auto mt-8 min-h-[71vh]">
             <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
             <h3 className="text-lg font-semibold">Total Price: ${totalPrice.toFixed(2)}</h3>
             <form onSubmit={handleSubmit}>

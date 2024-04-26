@@ -37,7 +37,7 @@ const ShoppingCartPage = ({ cartItems }) => {
   };
 
   return (
-    <div className="container mx-auto mt-8  min-h-[75vh]">
+    <div className="container mx-auto mt-8  min-h-[71vh]">
       <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
       {(cartItems.value && cartItems.value.length > 0) ? (
         <>
