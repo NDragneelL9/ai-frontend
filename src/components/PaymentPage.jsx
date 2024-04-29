@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { totalPrice, order, payments } from '../signals/signals';
+import { useLocation } from 'react-router-dom';
+import { totalPrice, orders, payments } from '../signals/signals';
 import { PAYMENTS_CREATE_URL } from '../helpers/constants';
 
 const PaymentPage = () => {
+    let { state } = useLocation();
+    const {totalAmount, installment} = state;
     // For demo purposes
     const [isPaid, setIsPaid] = useState(false);
 
@@ -48,7 +51,7 @@ const PaymentPage = () => {
     return (
         <div className="container mx-auto mt-8 min-h-[71vh]">
             <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
-            <h3 className="text-lg font-semibold">Total Price: ${totalPrice.toFixed(2)}</h3>
+            <h3 className="text-lg font-semibold">Payment: ${(totalAmount / installment).toFixed(2)}</h3>
             <form onSubmit={handleSubmit}>
                 <div className="bg-white py-6 rounded-lg shadow-md">
                     <div className="mb-4">

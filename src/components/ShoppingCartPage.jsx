@@ -2,9 +2,13 @@ import React from 'react';
 import { totalPrice, LOCAL_STORAGE_KEY } from '../signals/signals';
 import { useNavigate } from "react-router-dom";
 import { ORDERS_CREATE_URL } from '../helpers/constants';
+import { id } from '../helpers/orderHelper';
+import { orders } from '../signals/signals';
+import { useSignal } from '@preact/signals-react';
 
 const ShoppingCartPage = ({ cartItems }) => {
   const navigate = useNavigate();
+  const newOrder = useSignal();
 
   const clearCart = () => {
     cartItems.value = [];
@@ -13,26 +17,41 @@ const ShoppingCartPage = ({ cartItems }) => {
 
   const startPayment = async () => {
     try {
-      const response = await fetch(ORDERS_CREATE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              totalAmount: totalPrice,
-              orderItems: cartItems.value,
-              orderDate: new Date().toISOString(),
-          })
-        });
-        if(response.ok) {
-          order.value = await response.json();
-          navigate("/payment");
-        }
+      // const response = await fetch(ORDERS_CREATE_URL, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     totalAmount: totalPrice,
+      //     orderItems: cartItems.value,
+      //     orderDate: new Date().toISOString(),
+      //     isClosed: false,
+      //   })
+      // });
+      // if (response.ok) {
+      //   order.value = await response.json();
+      //   navigate("/payment");
+      // }
+      const newOrderId = id();
+      newOrder.value = {
+        id: newOrderId,
+        orderDate: new Date().toISOString(),
+        totalAmount: totalPrice,
+        paidAmount: 0,
+        installment: 4,
+        isClosed: false,
+        orderItems: cartItems.value.map(item => ({ ...item, orderId: newOrderId }))
+      }
+      orders.value = [
+        ...orders.value,
+        newOrder.value
+      ]
     } catch (error) {
       console.error(error.message)
     } finally {
       // Navigate to payment page for demo purposes
-      navigate("/payment");
+      // navigate("/payment");
     }
   };
 
@@ -56,9 +75,9 @@ const ShoppingCartPage = ({ cartItems }) => {
           <div className="my-4">
             <h3 className="text-lg font-semibold">Total Price: ${totalPrice.toFixed(2)}</h3>
             <button className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 focus:outline-none" onClick={() => startPayment()}>Checkout</button>
-            <button 
-                className="bg-gray-900 text-white px-4 py-2 ml-2 rounded-md hover:bg-gray-800 focus:outline-none" 
-                onClick={() => clearCart()}>Clear cart
+            <button
+              className="bg-gray-900 text-white px-4 py-2 ml-2 rounded-md hover:bg-gray-800 focus:outline-none"
+              onClick={() => clearCart()}>Clear cart
             </button>
           </div>
         </>

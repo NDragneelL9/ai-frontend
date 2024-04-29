@@ -1,6 +1,7 @@
 import { effect, signal, computed } from "@preact/signals-react";
 export const LOCAL_STORAGE_KEY = "cartItems"
 export const PAYMENT_LOCAL_STORAGE_KEY = "payments"
+export const ORDERS_LOCAL_STORAGE_KEY = "orders"
 export const USER_LOCAL_STORAGE_KEY = "currentUser"
 
 // Auth signals
@@ -36,8 +37,15 @@ export const totalPrice = cartItems.value.reduce((total, item) => total + (parse
 
 
 // ORDER signals
-export const order = signal({});
+export const orders = signal(getOrdersFromStorage());
+function getOrdersFromStorage() {
+  const orders = localStorage.getItem(ORDERS_LOCAL_STORAGE_KEY);
+  return orders ? JSON.parse(orders) : [];
+};
 
+effect(() => {
+  localStorage.setItem(ORDERS_LOCAL_STORAGE_KEY, JSON.stringify(orders.value));
+})
 // Payment signals
 
 export const payments = signal(getPaymentsFromStorage());

@@ -1,8 +1,12 @@
 import React from 'react';
-import {currentUser, isLoggedIn} from "../signals/signals"
+import { currentUser, isLoggedIn, orders } from "../signals/signals"
 import UserAuthPage from './LoginPage';
 import { googleLogout } from '@react-oauth/google';
 import { getStatusColor, getStatusText } from '../helpers/paymentHelper';
+import { nextMonthPayment } from '../helpers/dateHelper';
+import { getOrderStatusColor, getOrderStatusText } from '../helpers/orderHelper';
+import { Link } from 'react-router-dom';
+
 
 const UserProfilePage = () => {
   // Samples user payments data
@@ -47,7 +51,7 @@ const UserProfilePage = () => {
   const logOut = () => {
     googleLogout();
     currentUser.value = null
-};
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,14 +59,14 @@ const UserProfilePage = () => {
     console.log('Form submitted:', currentUser.value);
   };
 
-  if(!isLoggedIn.value) {
-    return <UserAuthPage/>
+  if (!isLoggedIn.value) {
+    return <UserAuthPage />
   }
 
   return (
     <div className="container mx-auto mt-8 min-h-[71vh]">
       <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
-      <img src={currentUser.value.profileImage} alt="profile-image" referrerPolicy="no-referrer" className="p-6 max-h-64 max-w-64"/>
+      <img src={currentUser.value.profileImage} alt="profile-image" referrerPolicy="no-referrer" className="p-6 max-h-64 max-w-64" />
       <form onSubmit={handleSubmit}>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex flex-wrap mb-4">
@@ -142,12 +146,32 @@ const UserProfilePage = () => {
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Save Changes</button>
         </div>
       </form>
-      <div className="bg-white rounded-lg shadow-md">
+      <div className="bg-white rounded-lg shadow-md my-2 mx-2">
         <div className="flex flex-wrap mb-4">
-          <div className="w-full md:w-1/2 pr-4">
-            <h2 className="text-2xl font-semibold mb-4">User payments</h2>
+          <div className="w-full md:w-1/2 pr-4 my-4 mx-2">
+            <h2 className="text-2xl font-semibold mb-4">User orders</h2>
             <div className="flex ml-2">
-              {payments.length > 0 && (
+              {orders.value && orders.value.length > 0 && (
+                orders.value.map(order => {
+                  return (
+                    <Link to={`/order/${order.id}`} key={order.id} state={{ ...order }}>
+                      <div className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2">
+                        <div className={`px-4 py-2 ${getOrderStatusColor(order.isClosed)} text-white text-center`}>
+                          <h3 className="text-lg font-semibold">{getOrderStatusText(order.isClosed)}</h3>
+                        </div>
+                        <div className="p-4">
+                          <p className="text-sm">Order number: {order.id}</p>
+                          <p className="text-sm">Total price: ${order.totalAmount}</p>
+                          <p className="text-sm">Remaining: ${order.totalAmount - order.paidAmount}</p>
+                          <p className="text-sm">Order date: {order.orderDate.substring(0, 10)}</p>
+                          <p className="text-sm">Next payment: {nextMonthPayment().toISOString().substring(0, 10)}</p>
+                        </div>
+                      </ div>
+                    </Link>
+                  )
+                })
+              )}
+              {/* {payments.length > 0 && (
                 payments.map(payment => {
                   return (
                     <div key={payment.id} className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2">
@@ -162,7 +186,7 @@ const UserProfilePage = () => {
                     </div>
                   )
                 })
-              )}
+              )} */}
             </div>
           </div>
         </div>
