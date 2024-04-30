@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSignal, useSignalEffect } from '@preact/signals-react';
-import { PRODUCTS_GET_URL } from '../helpers/constants';
 import { fkProducts } from '../helpers/seeds';
 
 const ProductsSection = ({ cartItems }) => {
@@ -8,10 +7,11 @@ const ProductsSection = ({ cartItems }) => {
 
   const loadProducts = async () => {
     try {
-      const response = await fetch(PRODUCTS_GET_URL); // Replace with your API endpoint
-      if (response) {
-        products.value = await response.json();
-      }
+      // TODO: Comment until integration with backend
+      // const response = await fetch(PRODUCTS_GET_URL); // Replace with your API endpoint
+      // if (response) {
+      //   products.value = await response.json();
+      // }
     } catch (error) {
       console.error(error.message)
     } finally {
@@ -62,7 +62,7 @@ const ProductsSection = ({ cartItems }) => {
         <h2 className="text-3xl font-semibold mb-8">Featured Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {getCurrentPageProducts().map(product => (
-            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300 hover:border-gray-500">
+            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-400 hover:border-gray-500">
               <img src={product.imageUrl} alt={product.productName} className="w-full h-32 object-cover object-center" />
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{product.productName}</h3>

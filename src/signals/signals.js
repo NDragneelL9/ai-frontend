@@ -53,3 +53,7 @@ function getPaymentsFromStorage() {
   const payments = localStorage.getItem(PAYMENT_LOCAL_STORAGE_KEY);
   return payments ? JSON.parse(payments) : [];
 };
+
+effect(() => {
+  localStorage.setItem(PAYMENT_LOCAL_STORAGE_KEY, JSON.stringify(payments.value));
+})

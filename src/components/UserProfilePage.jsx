@@ -1,33 +1,13 @@
 import React from 'react';
-import { currentUser, isLoggedIn, orders } from "../signals/signals"
+import { currentUser, isLoggedIn, orders, payments } from "../signals/signals"
 import UserAuthPage from './LoginPage';
 import { googleLogout } from '@react-oauth/google';
-import { getStatusColor, getStatusText } from '../helpers/paymentHelper';
 import { nextMonthPayment } from '../helpers/dateHelper';
 import { getOrderStatusColor, getOrderStatusText } from '../helpers/orderHelper';
 import { Link } from 'react-router-dom';
 
 
 const UserProfilePage = () => {
-  // Samples user payments data
-  const payments = [
-    {
-      id: 1,
-      orderId: 1,
-      paymentNumber: 1,
-      amount: 19.99,
-      paymentDate: new Date().toISOString(),
-      status: "pending"
-    },
-    {
-      id: 2,
-      orderId: 2,
-      paymentNumber: 2,
-      amount: 39.99,
-      paymentDate: new Date().toISOString(),
-      status: "success"
-    },
-  ]
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,7 +58,7 @@ const UserProfilePage = () => {
                   name="firstName"
                   value={currentUser.value.firstName}
                   onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  className="border border-gray-400 px-3 py-2 rounded-md w-full"
                 />
               </div>
             </div>
@@ -90,7 +70,7 @@ const UserProfilePage = () => {
                   name="lastName"
                   value={currentUser.value.lastName}
                   onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  className="border border-gray-400 px-3 py-2 rounded-md w-full"
                 />
               </div>
             </div>
@@ -104,7 +84,7 @@ const UserProfilePage = () => {
                   name="address.country"
                   value={currentUser.value.address.country}
                   onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  className="border border-gray-400 px-3 py-2 rounded-md w-full"
                 />
               </div>
             </div>
@@ -116,7 +96,7 @@ const UserProfilePage = () => {
                   name="address.city"
                   value={currentUser.value.address.city}
                   onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  className="border border-gray-400 px-3 py-2 rounded-md w-full"
                 />
               </div>
             </div>
@@ -128,7 +108,7 @@ const UserProfilePage = () => {
                   name="address.street"
                   value={currentUser.value.address.street}
                   onChange={handleChange}
-                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  className="border border-gray-400 px-3 py-2 rounded-md w-full"
                 />
               </div>
             </div>
@@ -140,7 +120,7 @@ const UserProfilePage = () => {
               name="creditCardInfo"
               value={currentUser.value.creditCardInfo}
               onChange={handleChange}
-              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+              className="border border-gray-400 px-3 py-2 rounded-md w-full"
             />
           </div>
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Save Changes</button>
@@ -153,16 +133,20 @@ const UserProfilePage = () => {
             <div className="flex ml-2">
               {orders.value && orders.value.length > 0 && (
                 orders.value.map(order => {
+                  const orderPayments = payments.value.filter(payment => payment.orderId === order.id);
+                  const totalPaid = orderPayments.reduce((amountPaid, payment) => {
+                    return amountPaid + payment.amount
+                  }, 0)
                   return (
-                    <Link to={`/order/${order.id}`} key={order.id} state={{ ...order }}>
-                      <div className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2">
+                    <Link to={`/order/${order.id}`} key={order.id} state={{ ...order }} className="mr-2">
+                      <div className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2 border border-gray-400">
                         <div className={`px-4 py-2 ${getOrderStatusColor(order.isClosed)} text-white text-center`}>
                           <h3 className="text-lg font-semibold">{getOrderStatusText(order.isClosed)}</h3>
                         </div>
                         <div className="p-4">
                           <p className="text-sm">Order number: {order.id}</p>
-                          <p className="text-sm">Total price: ${order.totalAmount}</p>
-                          <p className="text-sm">Remaining: ${order.totalAmount - order.paidAmount}</p>
+                          <p className="text-sm">Total price: ${order.totalAmount.toFixed(2)}</p>
+                          <p className="text-sm">Remaining: ${(order.totalAmount - totalPaid).toFixed(2)}</p>
                           <p className="text-sm">Order date: {order.orderDate.substring(0, 10)}</p>
                           <p className="text-sm">Next payment: {nextMonthPayment().toISOString().substring(0, 10)}</p>
                         </div>
@@ -171,22 +155,6 @@ const UserProfilePage = () => {
                   )
                 })
               )}
-              {/* {payments.length > 0 && (
-                payments.map(payment => {
-                  return (
-                    <div key={payment.id} className="max-w-xs w-full rounded-lg overflow-hidden shadow-md ml-2">
-                      <div className={`px-4 py-2 ${getStatusColor(payment.status)} text-white text-center`}>
-                        <h3 className="text-lg font-semibold">{getStatusText(payment.status)}</h3>
-                      </div>
-                      <div className="p-4">
-                        <p className="text-sm">Payment number: {payment.paymentNumber}</p>
-                        <p className="text-sm">Payment amount: {payment.amount}</p>
-                        <p className="text-sm">Payment date: {payment.paymentDate}</p>
-                      </div>
-                    </div>
-                  )
-                })
-              )} */}
             </div>
           </div>
         </div>

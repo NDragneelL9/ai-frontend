@@ -1,4 +1,4 @@
-export const getStatusColor = (status) => {
+export const getPaymentStatusColor = (status) => {
     switch (status) {
         case 'success':
             return 'bg-green-500';
@@ -11,7 +11,7 @@ export const getStatusColor = (status) => {
     }
 };
 
-export const getStatusText = (status) => {
+export const getPaymentStatusText = (status) => {
     switch (status) {
         case 'success':
             return 'Payment Successful';

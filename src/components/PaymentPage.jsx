@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { totalPrice, orders, payments } from '../signals/signals';
-import { PAYMENTS_CREATE_URL } from '../helpers/constants';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { orders, payments } from '../signals/signals';
+import { useSignal } from '@preact/signals-react';
 
 const PaymentPage = () => {
     let { state } = useLocation();
-    const {totalAmount, installment} = state;
+    const newPayment = useSignal();
+    const { totalAmount, installment, id } = state;
     // For demo purposes
     const [isPaid, setIsPaid] = useState(false);
+    const navigate = useNavigate();
 
     const [paymentInfo, setPaymentInfo] = useState({
         cardNumber: '',
@@ -24,22 +26,49 @@ const PaymentPage = () => {
         }));
     };
 
+    const payingAmount = (totalAmount / installment);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(PAYMENTS_CREATE_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    orderId: order.value.id,
-                    amount: totalPrice,
-                    status: "pending",
-                    paymentDate: new Date().toISOString(),
-                })
-            });
-            payments.value = await response.json();
+            const otherOrders = orders.value.filter(order => order.id !== id)
+            const payingOrder = orders.value.find(order => order.id === id)
+
+            const paymentNumber = "payment_" + payments.value.filter(payment => payment.orderId === id).length;
+
+            newPayment.value = {
+                orderId: id,
+                status: 'success',
+                paymentNumber: paymentNumber,
+                amount: payingAmount,
+                paymentDate: new Date().toISOString(),
+            }
+
+            payments.value = [...payments.value, newPayment.value]
+            const orderPayments = payments.value.filter(payment => payment.orderId === id);
+
+            const totalPaid = orderPayments.reduce((amountPaid, payment) => {
+                return amountPaid + payment.amount
+            }, 0)
+
+            const updatedOrder = { ...payingOrder, isClosed: totalPaid === payingOrder.totalAmount };
+            orders.value = [...otherOrders, updatedOrder];
+
+            navigate(`/order/${id}`, { state: { ...updatedOrder } });
+            //TODO: commented until integration with backend 
+            // const response = await fetch(PAYMENTS_CREATE_URL, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({
+            //         orderId: id,
+            //         amount: totalPrice,
+            //         status: "pending",
+            //         paymentDate: new Date().toISOString(),
+            //     })
+            // });
+            // payments.value = await response.json();
         } catch (error) {
             console.error(error.message)
         } finally {
@@ -51,7 +80,8 @@ const PaymentPage = () => {
     return (
         <div className="container mx-auto mt-8 min-h-[71vh]">
             <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
-            <h3 className="text-lg font-semibold">Payment: ${(totalAmount / installment).toFixed(2)}</h3>
+            <h3 className="text-lg font-semibold">Payment: ${payingAmount.toFixed(2)}</h3>
+            <h2 className="text-lg font-semibold">Order: {id}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="bg-white py-6 rounded-lg shadow-md">
                     <div className="mb-4">
@@ -62,7 +92,7 @@ const PaymentPage = () => {
                             name="cardNumber"
                             value={paymentInfo.cardNumber}
                             onChange={handleChange}
-                            className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                            className="border border-gray-400 px-3 py-2 rounded-md w-full"
                         />
                     </div>
                     <div className="mb-4">
@@ -73,7 +103,7 @@ const PaymentPage = () => {
                             name="cardholderName"
                             value={paymentInfo.cardholderName}
                             onChange={handleChange}
-                            className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                            className="border border-gray-400 px-3 py-2 rounded-md w-full"
                         />
                     </div>
                     <div className="flex flex-wrap -mx-2 mb-4">
@@ -85,7 +115,7 @@ const PaymentPage = () => {
                                 name="expirationDate"
                                 value={paymentInfo.expirationDate}
                                 onChange={handleChange}
-                                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                                className="border border-gray-400 px-3 py-2 rounded-md w-full"
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-2">
@@ -96,7 +126,7 @@ const PaymentPage = () => {
                                 name="cvv"
                                 value={paymentInfo.cvv}
                                 onChange={handleChange}
-                                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                                className="border border-gray-400 px-3 py-2 rounded-md w-full"
                             />
                         </div>
                     </div>

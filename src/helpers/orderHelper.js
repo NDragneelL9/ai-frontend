@@ -1,12 +1,3 @@
-function generateId(prefix = "order_", start) {
-    var i = start || 0;
-    return function() {
-        return prefix + i++;
-    }
-}
-
-export const id = generateId("order_", 0)
-
 export const getOrderStatusColor = (isClosed) => {
     switch (isClosed) {
         case true:

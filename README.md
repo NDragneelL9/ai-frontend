@@ -360,7 +360,7 @@ const PaymentPage = () => {
               name="cardNumber"
               value={paymentInfo.cardNumber}
               onChange={handleChange}
-              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+              className="border border-gray-400 px-3 py-2 rounded-md w-full"
             />
           </div>
           <div className="mb-4">
@@ -371,7 +371,7 @@ const PaymentPage = () => {
               name="cardholderName"
               value={paymentInfo.cardholderName}
               onChange={handleChange}
-              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+              className="border border-gray-400 px-3 py-2 rounded-md w-full"
             />
           </div>
           <div className="flex flex-wrap -mx-2 mb-4">
@@ -383,7 +383,7 @@ const PaymentPage = () => {
                 name="expirationDate"
                 value={paymentInfo.expirationDate}
                 onChange={handleChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                className="border border-gray-400 px-3 py-2 rounded-md w-full"
               />
             </div>
             <div className="w-full md:w-1/2 px-2">
@@ -394,7 +394,7 @@ const PaymentPage = () => {
                 name="cvv"
                 value={paymentInfo.cvv}
                 onChange={handleChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                className="border border-gray-400 px-3 py-2 rounded-md w-full"
               />
             </div>
           </div>
