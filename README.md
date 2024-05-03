@@ -411,7 +411,6 @@ export default PaymentPage;
 Prompt 8. Help me with integration google Oauth to my react components.
 
 Answer 8:
-
 Integrating Google OAuth into a React application involves several steps:
 
 1. Set up a project in the Google Cloud Console.
@@ -499,6 +498,58 @@ export default UserAuthPage;
 Remember to replace `'YOUR_CLIENT_ID.apps.googleusercontent.com'` with your actual Client ID obtained from the Google Cloud Console.
 
 This is a basic implementation. Depending on your requirements, you may need to handle additional scenarios such as session management, user registration, and error handling.
+
+Prompt 9. Generate react component for order page where I can see order total price, order date, and order items. You should use same styling as before. Order items have quantity, name and price.
+
+Answer 9:
+```jsx
+import React from 'react';
+
+const OrderPage = ({ order }) => {
+  const { orderDate, orderTotal, orderItems } = order;
+
+  return (
+    <div className="py-12 min-h-[71vh]">
+      <div className="container mx-auto">
+        <h2 className="text-3xl font-semibold mb-8">Order Details</h2>
+        <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
+          <div className="p-6 flex justify-between">
+            <div>
+              <p className="text-gray-600 font-semibold">Order Date:</p>
+              <p className="text-gray-800">{orderDate}</p>
+            </div>
+            <div>
+              <p className="text-gray-600 font-semibold">Order Total:</p>
+              <p className="text-gray-800">${orderTotal}</p>
+            </div>
+          </div>
+          <div className="p-6">
+            <p className="text-gray-600 font-semibold">Order Items:</p>
+            {orderItems.map((item, index) => (
+              <div key={index} className="flex items-center justify-between border-b border-gray-300 py-2">
+                <div className="flex-1">
+                  <p className="text-gray-800">{item.quantity}x {item.name}</p>
+                </div>
+                <div>
+                  <p className="text-gray-800">${(item.quantity * item.price).toFixed(2)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderPage;
+```
+In this component:
++ The OrderPage component takes an order object as a prop, containing order details such as orderDate, orderTotal, and orderItems.
++ The order details are displayed in a simple layout with appropriate styling.
++ Each order item is displayed with its quantity, name, and total price.
++ The total price for each item is calculated by multiplying the quantity with the price.
++ The component is styled using Tailwind CSS classes to achieve a clean and consistent appearance.
 
 # Conclusion
 In general gpt-3.5 helps with generating basic layout  for desired domain. Also AI is capable of working with front-end logic generation (in our example working with shopping cart and creating routing between pages). At the end AI is worth using for scaffolding a brand new project (creating MVP's or prototypes). But still should be used with care, since some work is easier to do manually rather than spending time for "good" prompt to generate something.

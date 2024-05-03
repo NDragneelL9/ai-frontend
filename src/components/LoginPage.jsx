@@ -27,6 +27,7 @@ const UserAuthPage = () => {
             .then((response) => response.json())
             .then(user => {
                 currentUser.value = {
+                    id: "user_0",
                     firstName: user.given_name,
                     lastName: user.family_name,
                     address: {
@@ -47,6 +48,7 @@ const UserAuthPage = () => {
         e.preventDefault();
         // demo login process
         currentUser.value = {
+            id: "user_1",
             firstName: 'John',
             lastName: 'Doe',
             address: {

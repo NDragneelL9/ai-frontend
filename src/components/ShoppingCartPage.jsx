@@ -1,5 +1,5 @@
 import React from 'react';
-import { totalPrice, LOCAL_STORAGE_KEY } from '../signals/signals';
+import { totalPrice, LOCAL_STORAGE_KEY, currentUser } from '../signals/signals';
 import { useNavigate } from "react-router-dom";
 import { DEFAULT_INSTALLMENT_PERIOD } from '../helpers/constants';
 import { orders } from '../signals/signals';
@@ -44,12 +44,14 @@ const ShoppingCartPage = ({ cartItems }) => {
         totalAmount: totalPrice,
         installment: installment.value || DEFAULT_INSTALLMENT_PERIOD,
         isClosed: false,
-        orderItems: cartItems.value.map(item => ({ ...item, orderId: newOrderId }))
+        orderItems: cartItems.value.map(item => ({ ...item, orderId: newOrderId })),
+        orderUser: currentUser.value.id
       }
       orders.value = [
         ...orders.value,
         newOrder.value
       ]
+      cartItems.value = [];
       navigate(`/order/${newOrderId}`, {state : {...newOrder.value}});
     } catch (error) {
       console.error(error.message)

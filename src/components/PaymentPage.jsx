@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { orders, payments } from '../signals/signals';
+import { currentUser, orders, payments } from '../signals/signals';
 import { useSignal } from '@preact/signals-react';
 
 const PaymentPage = () => {
@@ -11,9 +11,10 @@ const PaymentPage = () => {
     const [isPaid, setIsPaid] = useState(false);
     const navigate = useNavigate();
 
+    console.info(currentUser.value)
     const [paymentInfo, setPaymentInfo] = useState({
-        cardNumber: '',
-        cardholderName: '',
+        cardNumber: currentUser.value ? currentUser.value.creditCardInfo : '',
+        cardholderName: currentUser.value ? currentUser.value.firstName + " " + currentUser.value.lastName : '',
         expirationDate: '',
         cvv: '',
     });

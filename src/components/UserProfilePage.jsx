@@ -43,6 +43,8 @@ const UserProfilePage = () => {
     return <UserAuthPage />
   }
 
+  const userOrders = orders.value.filter(order => order.orderUser === currentUser.value.id)
+
   return (
     <div className="container mx-auto mt-8 min-h-[71vh]">
       <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
@@ -131,8 +133,8 @@ const UserProfilePage = () => {
           <div className="w-full md:w-1/2 pr-4 my-4 mx-2">
             <h2 className="text-2xl font-semibold mb-4">User orders</h2>
             <div className="flex ml-2">
-              {orders.value && orders.value.length > 0 && (
-                orders.value.map(order => {
+              {userOrders && (
+                userOrders.map(order => {
                   const orderPayments = payments.value.filter(payment => payment.orderId === order.id);
                   const totalPaid = orderPayments.reduce((amountPaid, payment) => {
                     return amountPaid + payment.amount
