@@ -11,7 +11,6 @@ const PaymentPage = () => {
     const [isPaid, setIsPaid] = useState(false);
     const navigate = useNavigate();
 
-    console.info(currentUser.value)
     const [paymentInfo, setPaymentInfo] = useState({
         cardNumber: currentUser.value ? currentUser.value.creditCardInfo : '',
         cardholderName: currentUser.value ? currentUser.value.firstName + " " + currentUser.value.lastName : '',
