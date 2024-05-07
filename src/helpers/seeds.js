@@ -1,7 +1,7 @@
 
 // Sample product data
 // Generate random product names
-const productNames = ['Shirt', 'Pants', 'Shoes', 'Hat', 'Sunglasses', 'Watch', 'Bag', 'Jacket', 'Dress', 'Jeans'];
+const productNames = ['shirt', 'shoes', 'hat', 'sunglasses', 'watch', 'bag', 'jacket', 'dress', 'jeans'];
 
 // Function to generate a random integer between min and max (inclusive)
 const getRandomInt = (min, max) => {
@@ -15,11 +15,11 @@ const getRandomPrice = (minPrice, maxPrice) => {
 
 // Function to generate a random URL for the image
 const getImageUrl = (productName) => {
-    return `https://images.placeholders.dev/?width=200&height=200&text=${productName}&bgColor=black&textColor=blue`;
+    return `src/assets/${productName}_${getRandomInt(1, 6)}.jpg`;
 }
 
 // Generate an array of 50 objects
-export const fkProducts = Array.from({ length: 48 }, (_, index) => {
+export const fkProducts = Array.from({ length: 54 }, (_, index) => {
     const productName = productNames[getRandomInt(0, productNames.length - 1)];
     return {
         id: index + 1,

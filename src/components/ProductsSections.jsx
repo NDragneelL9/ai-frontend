@@ -63,10 +63,10 @@ const ProductsSection = ({ cartItems }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {getCurrentPageProducts().map(product => (
             <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-400 hover:border-gray-500">
-              <img src={product.imageUrl} alt={product.productName} className="w-full h-32 object-cover object-center" />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">{product.productName}</h3>
-                <p className="text-gray-600 mb-2">${product.price}</p>
+              <img src={product.imageUrl} alt={product.productName} className="w-full h-48 object-cover object-center" />
+              <div className="px-4 pb-2">
+                <h3 className="text-lg font-semibold mb-2 pl-1">{product.productName}</h3>
+                <p className="text-gray-600 mb-2 pl-1">${product.price}</p>
                 <button className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 focus:outline-none" onClick={() => addToCart(product)}>Add to Cart</button>
               </div>
             </div>
